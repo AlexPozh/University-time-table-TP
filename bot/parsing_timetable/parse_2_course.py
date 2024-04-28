@@ -1,6 +1,11 @@
+# import sys
+# sys.path.append('/home/alexander/Рабочий стол/Uni_time_table_IRIT/Bot_uni_time_table/bot')
+
+
+
 from openpyxl import load_workbook
 
-from additional_funcs import get_cell_value, check_cell
+from .add_funcs import get_cell_value, check_cell
 
 from pprint import pprint
 
@@ -20,17 +25,16 @@ from pprint import pprint
     ...
 }
 """
-GROUPS_TIMETABLE: dict[str, dict[str, list[str]]] = {}
 
 
 def formatted_output(day, time_and_num_lesson, lesson_name) -> tuple[str] | None:
     """Ф-ция форматирования расписания."""
     if day is None or time_and_num_lesson is None or lesson_name is None:    # если None хотя бы одна из перменных, то возвращаем None
         return 
-    
-    return day.strip(), time_and_num_lesson.strip(), " ".join(lesson_name.strip().split())
+    return day.strip(),  "<b><u>" + time_and_num_lesson.strip() + "</u></b>", " ".join(lesson_name.strip().split())
 
-book = load_workbook("/home/alexander/Рабочий стол/Uni_time_table_IRIT/Bot_uni_time_table/files_timetable/2_kurs_IRIT.xlsx")    # абсолютный путь до файла
+
+book = load_workbook("/home/alexander/Рабочий стол/Uni_time_table_IRIT/Bot_uni_time_table/bot/parsing_timetable/files_timetable/2_kurs_IRIT.xlsx")    # абсолютный путь до файла
 
 ist_table = book["ист"]    # извлекаем отдельную таблицу для групп ИСТ
 
@@ -43,12 +47,14 @@ IST_GROUPS: dict[str, tuple[str]] = {   # словарь содержит коо
     "N11": ("D", "E", "N")
 }
 
-def parse_groups(table) -> None:
-    """Ф-ция для парсинга групп ИСТ.
-    table: таблица групп / worksheet"""
+
+def parse_groups() -> None:
+    """Ф-ция для парсинга групп ИСТ."""
+    GROUPS_TIMETABLE: dict[str, dict[str, list[str]]] = {}
+
     for group_cell, value_cells in IST_GROUPS.items(): 
 
-        group =  get_cell_value(table[group_cell])
+        group =  get_cell_value(ist_table[group_cell])
 
         GROUPS_TIMETABLE[group] = {}    # создаем ключ - группу, а значение - пустой словарь
 
@@ -68,8 +74,9 @@ def parse_groups(table) -> None:
                     GROUPS_TIMETABLE[group][schedule[0]].append(schedule[1] + " " + schedule[2]) 
                 else:
                     GROUPS_TIMETABLE[group][schedule[0]] = [schedule[1] + " " + schedule[2]]
+    return GROUPS_TIMETABLE
 
-parse_groups(ist_table)    
+# pprint(parse_groups())  
 
 # ПРОВЕРКА РАСПИСАНИЯ
 # for key, value in GROUPS_TIMETABLE['22 ИСТ-4-2 (21)'].items():
@@ -78,5 +85,4 @@ parse_groups(ist_table)
 #         print(day)
 #     print("-"*15)
 
-
-# pprint(GROUPS_TIMETABLE)    
+ 

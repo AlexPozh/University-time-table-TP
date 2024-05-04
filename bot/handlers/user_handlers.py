@@ -17,6 +17,7 @@ async def start_command(message: Message):
         text=LEXICON_RU[message.text]
     )
 
+    print(f"Апдейт от пользователя c id{message.from_user.id} попал в ф-цию start_command()")
 
 @router.message(Command("help"))
 async def help_command(message: Message):
@@ -24,6 +25,8 @@ async def help_command(message: Message):
     await message.answer(
         text=LEXICON_RU[message.text]
     )
+
+    print(f"Апдейт от пользователя c id{message.from_user.id} попал в ф-цию help_command()")
 
 
 @router.message(Command("choose_group"))
@@ -33,3 +36,5 @@ async def choose_gp_command(message: Message):
         text=LEXICON_RU[message.text],
         reply_markup=choose_course()
     )
+
+    print(f"Апдейт от пользователя c id{message.from_user.id} попал в ф-цию choose_gp_command()")

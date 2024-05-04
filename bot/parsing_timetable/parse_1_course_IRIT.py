@@ -80,6 +80,11 @@ def parse_groups() -> dict[str, dict[str, list[str]]]:
                     GROUPS_TIMETABLE[group][schedule[0]].append(schedule[1] + " " + schedule[2]) 
                 else:
                     GROUPS_TIMETABLE[group][schedule[0]] = [schedule[1] + " " + schedule[2]]
-    return GROUPS_TIMETABLE
+    if GROUPS_TIMETABLE is not None:
+        print("Парсинг расписания был выполнен успешно.")
+        return GROUPS_TIMETABLE
+    else:
+        print("Парсинг не удался, подождите, пока тех. поддержка исправит ситуацию.")
+    
 
 # pprint(parse_groups())

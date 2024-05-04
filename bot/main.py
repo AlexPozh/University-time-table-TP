@@ -1,8 +1,3 @@
-# import sys
-
-# print(sys.path)
-
-
 
 import asyncio
 
@@ -10,10 +5,9 @@ from aiogram import Dispatcher, Bot
 
 from config_bot import get_bot_config
 
-from handlers import user_handlers, callback_queries
+from handlers import user_handlers, callback_queries, other_handlers
 
 from keyboards.main_menu import main_menu
-
 
 
 async def main() -> None:
@@ -30,6 +24,7 @@ async def main() -> None:
     # подключение дочерних роутеров к родительскому
     dp.include_router(user_handlers.router)
     dp.include_router(callback_queries.router)
+    dp.include_router(other_handlers.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

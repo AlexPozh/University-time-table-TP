@@ -40,6 +40,7 @@ async def show_groups(callback: CallbackQuery, state: FSMContext):
 
     await state.set_state(StudentGroup.student_group)
     
+    print(f"Апдейт от пользователя c id{callback.from_user.id} попал в ф-цию show_groups()")
 
 
 @router.callback_query(F.data.in_(["23-ИСТ-1-1", "23-ИСТ-1-2", "23-ИСТ-2", "23-ИСТ-3", "23-ИСТ-4-1", "23-ИСТ-4-2", "22-ИСТ-1", "22-ИСТ-2", "22-ИСТ-3", "22-ИСТ-4-1", "22-ИСТ-4-2"]), StateFilter(StudentGroup.student_group))
@@ -56,14 +57,14 @@ async def show_weekdays(callback: CallbackQuery,  state: FSMContext):
         reply_markup=weekdays()
     )
 
+    print(f"Апдейт от пользователя c id{callback.from_user.id} попал в ф-цию show_weekdays()")
+
 
 @router.callback_query(F.data.in_(["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]))
 async def show_schedule_for_group(callback: CallbackQuery,  state: FSMContext):
     """Ф-ция показывает расписание на выбранный день для выбранной группы"""
     
-    print("Im in show_schedule_for_group()")
     data = await state.get_data()
-    print(data)
 
     group = data["group"]
     course = data["course"]
@@ -82,6 +83,8 @@ async def show_schedule_for_group(callback: CallbackQuery,  state: FSMContext):
             reply_markup=back_button()
         )
 
+    print(f"Апдейт от пользователя c id{callback.from_user.id} попал в ф-цию show_schedule_for_group() с данными: {data}")
+
 
 @router.callback_query(F.data == "back_weekdays")
 async def back_weekds(callback: CallbackQuery, state: FSMContext):
@@ -94,3 +97,5 @@ async def back_weekds(callback: CallbackQuery, state: FSMContext):
         text=f"Расписание для группы {group}:",
         reply_markup=weekdays()
     )
+
+    print(f"Апдейт от пользователя c id{callback.from_user.id} попал в ф-цию back_weekds()")
